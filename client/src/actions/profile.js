@@ -54,7 +54,7 @@ export const getProfiles = () => async (dispatch) => {
 // Get profile by ID
 export const getProfileById = (userId) => async (dispatch) => {
   try {
-    const res = await axios.get(`/api/profile/user${userId}`);
+    const res = await axios.get(`/api/profile/user/${userId}`);
 
     dispatch({
       type: GET_PROFILE,
@@ -71,41 +71,41 @@ export const getProfileById = (userId) => async (dispatch) => {
   }
 };
 
-export const createProfile =
-  (formData, history, edit = false) =>
-  async (dispatch) => {
-    try {
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      };
+export const createProfile = (formData, history, edit = false) => async (
+  dispatch
+) => {
+  try {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
 
-      const res = axios.post("/api/profile", formData, config);
+    const res = axios.post("/api/profile", formData, config);
 
-      dispatch({
-        type: GET_PROFILE,
-        payload: res.data,
-      });
+    dispatch({
+      type: GET_PROFILE,
+      payload: res.data,
+    });
 
-      dispatch(setAlert(edit ? "Profile Updated" : "Profile Created"));
+    dispatch(setAlert(edit ? "Profile Updated" : "Profile Created"));
 
-      if (!edit) {
-        history.push("/");
-      }
-    } catch (err) {
-      const errors = err.response.data.errors;
-
-      if (errors) {
-        errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
-      }
-
-      dispatch({
-        type: PROFILE_ERROR,
-        payload: { msg: err.response.statusText, status: err.response.status },
-      });
+    if (!edit) {
+      history.push("/");
     }
-  };
+  } catch (err) {
+    const errors = err.response.data.errors;
+
+    if (errors) {
+      errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
+    }
+
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status },
+    });
+  }
+};
 
 export const addExperience = (formData, history) => async (dispatch) => {
   try {
