@@ -27,8 +27,8 @@ router.post(
       const newPost = new Post({
         text: req.body.text,
         name: user.name,
-        avatr: req.avatar,
-        usr: req.user.id,
+        avatar: req.avatar,
+        user: req.user.id,
       });
 
       const post = await newPost.save();
@@ -85,7 +85,7 @@ router.delete("/:id", [auth, [checkObjectId("id")]], async (req, res) => {
     if (!post) {
       return res.status(404).json({ msg: "Post not found" });
     }
-    if (post.user !== req.user.id) {
+    if (post.user.toString() !== req.user.id) {
       return res.status(401).json({ msg: "User not authorized" });
     }
     await post.remove();
