@@ -1,6 +1,10 @@
-import React from "react";
+import React, { Fragment } from "react";
+import { Link, Navigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
-const Landing = () => {
+const Landing = ({ isAuthenticated }) => {
   return (
     <section class="landing">
       <div class="dark-overlay">
@@ -11,12 +15,22 @@ const Landing = () => {
             other developers
           </p>
           <div class="buttons">
-            <a href="register.html" class="btn btn-primary">
-              Sign Up
-            </a>
-            <a href="login.html" class="btn btn-light">
-              Login
-            </a>
+            {isAuthenticated ? (
+              <Fragment>
+                <Link to="/dashboard" class="btn btn-primary">
+                  Dashboard
+                </Link>
+              </Fragment>
+            ) : (
+              <Fragment>
+                <Link to="/register" class="btn btn-primary">
+                  Sign Up
+                </Link>
+                <Link to="/login" class="btn btn-light">
+                  Login
+                </Link>
+              </Fragment>
+            )}
           </div>
         </div>
       </div>
@@ -24,4 +38,12 @@ const Landing = () => {
   );
 };
 
-export default Landing;
+Landing.propTypes = {
+  isAuthenticated: PropTypes.bool,
+};
+
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.isAuthenticated,
+});
+
+export default connect(mapStateToProps)(Landing);
